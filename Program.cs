@@ -18,7 +18,16 @@ namespace MovieRatingApp
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<MovieDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("MyAllowSpecificOrigins",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
 
             var app = builder.Build();
 
@@ -32,6 +41,7 @@ namespace MovieRatingApp
             app.MapOpenApi();
 
             app.UseHttpsRedirection();
+            app.UseCors("MyAllowSpecificOrigins");
 
             app.UseAuthorization();
 
