@@ -77,6 +77,8 @@ namespace MovieRatingApp.Controllers
 
 
                 Response.Cookies.Append("jwt_token", token);
+                await _context.AddAsync(user);
+                await _context.SaveChangesAsync();
 
                 return Ok(new
                 {
