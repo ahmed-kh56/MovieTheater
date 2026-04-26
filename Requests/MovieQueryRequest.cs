@@ -2,7 +2,7 @@
 {
     public class MovieQueryRequest
     {
-        public Guid? GenreId { get; set; }
+        public Guid? SeriesId { get; set; }
         public Guid? MovieId { get; set; }
         public string? SearchTerm { get; set; }
         public DateTime? FromDate { get; set; }

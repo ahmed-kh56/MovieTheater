@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieRatingApp;
 
@@ -11,9 +12,11 @@ using MovieRatingApp;
 namespace MovieRatingApp.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    partial class MovieDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260424190140_Init_V_1_7")]
+    partial class Init_V_1_7
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,22 +49,6 @@ namespace MovieRatingApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("1e788493-610a-4e0c-b17a-9b6e030b85c5"),
-                            Name = "AmrMousv",
-                            Password = "Password123",
-                            Role = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("1552680b-9e72-451f-91ae-b00a975c5094"),
-                            Name = "AhmedZain",
-                            Password = "Password123",
-                            Role = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("MovieRatingApp.Models.Common.AuditLog", b =>
@@ -151,7 +138,7 @@ namespace MovieRatingApp.Migrations
                     b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SeriesId")
+                    b.Property<Guid>("SeriesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Type")
@@ -209,16 +196,11 @@ namespace MovieRatingApp.Migrations
                     b.Property<Guid?>("GenreId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("MovieId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("MovieId", "GenreId");
 
                     b.HasIndex("GenreId");
 
                     b.HasIndex("GenreId1");
-
-                    b.HasIndex("MovieId1");
 
                     b.ToTable("MovieGenres");
                 });
@@ -326,7 +308,8 @@ namespace MovieRatingApp.Migrations
                     b.HasOne("MovieRatingApp.Models.Movies.FilmSeries", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MovieRatingApp.Models.Auth.User", "User")
                         .WithMany("FavListItems")
@@ -358,10 +341,6 @@ namespace MovieRatingApp.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MovieRatingApp.Models.Movies.Movie", null)
-                        .WithMany("MovieGenres")
-                        .HasForeignKey("MovieId1");
 
                     b.Navigation("Genre");
 
@@ -405,8 +384,6 @@ namespace MovieRatingApp.Migrations
 
             modelBuilder.Entity("MovieRatingApp.Models.Movies.Movie", b =>
                 {
-                    b.Navigation("MovieGenres");
-
                     b.Navigation("OldPhotos");
                 });
 #pragma warning restore 612, 618

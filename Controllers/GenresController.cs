@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MovieRatingApp.Models;
+using MovieRatingApp.Models.Common;
+using MovieRatingApp.Models.Genres;
 
 namespace MovieRatingApp.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class GenresController : ControllerBase
     {
         private readonly MovieDbContext _context;
@@ -13,14 +16,13 @@ namespace MovieRatingApp.Controllers
         {
             _context = context;
         }
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
             {
                 var genresDto = await _context.Genres
-                    .Include(g => g.Movies)
+                    .Include(g => g.MovieGenres)
                     .Select(
                                 g => new
                                 {
@@ -28,7 +30,7 @@ namespace MovieRatingApp.Controllers
                                     Name = g.Name,
                                     CreatedAt = g.CreatedAt,
                                     LastUpdate = g.LastUpdate,
-                                    MoviesCount = g.Movies.Count
+                                    MoviesCount = g.MovieGenres.Count
                                 }
                             )
                     .ToListAsync();
@@ -40,6 +42,7 @@ namespace MovieRatingApp.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [Authorize(Roles ="Admin")]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(
             [FromRoute] Guid id,
@@ -68,6 +71,7 @@ namespace MovieRatingApp.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] string name)

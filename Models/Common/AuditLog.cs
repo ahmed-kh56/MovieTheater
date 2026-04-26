@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MovieRatingApp.Models
+namespace MovieRatingApp.Models.Common
 {
     public class AuditLog
     {

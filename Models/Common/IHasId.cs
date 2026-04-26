@@ -1,4 +1,4 @@
-﻿namespace MovieRatingApp.Models
+﻿namespace MovieRatingApp.Models.Common
 {
     public interface IHasId
     {

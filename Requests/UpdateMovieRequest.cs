@@ -1,4 +1,6 @@
-﻿namespace MovieRatingApp.Requests
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace MovieRatingApp.Requests
 {
     public class UpdateMovieRequest
     {

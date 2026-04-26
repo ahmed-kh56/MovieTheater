@@ -1,12 +1,15 @@
-﻿namespace MovieRatingApp.Models
+﻿using MovieRatingApp.Models.Common;
+using MovieRatingApp.Models.Movies;
+
+namespace MovieRatingApp.Models.Genres
 {
     public class Genre : IHasId
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime? LastUpdate {  get; private set; }
-        public ICollection<Movie> Movies { get; private set; } = new List<Movie>();
+        public DateTime? LastUpdate { get; private set; }
+        public ICollection<MovieGenre> MovieGenres { get; private set; } = new List<MovieGenre>();
         public Genre(string name)
         {
             Id = Guid.NewGuid();
@@ -22,6 +25,7 @@
             Name = name;
             LastUpdate = DateTime.Now;
         }
-        public Genre() { }
+        private Genre() { }
     }
+
 }
